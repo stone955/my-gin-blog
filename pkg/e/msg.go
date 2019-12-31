@@ -1,16 +1,18 @@
 package e
 
 var msgFlags = map[int]string{
-	Success:                    "ok",
+	Create:                     "created",
+	Ok:                         "ok",
+	Delete:                     "deleted",
 	Error:                      "error",
-	InvalidParams:              "请求参数错误",
-	ErrorExistTag:              "已存在该标签名称",
-	ErrorNotExistTag:           "该标签不存在",
-	ErrorNotExistArticle:       "该文章不存在",
-	ErrorAuthCheckTokenFail:    "Token鉴权失败",
-	ErrorAuthCheckTokenTimeout: "Token已超时",
-	ErrorAuthToken:             "Token生成失败",
-	ErrorAuth:                  "Token错误",
+	InvalidParams:              "invalid params",
+	ErrorExistTag:              "tag exist",
+	ErrorNotExistTag:           "tag not exist",
+	ErrorNotExistArticle:       "article not exist",
+	ErrorAuthCheckTokenFail:    "token check fail",
+	ErrorAuthCheckTokenTimeout: "token expired",
+	ErrorAuthToken:             "token auth fail",
+	ErrorAuth:                  "token error",
 }
 
 func GetMsg(code int) string {

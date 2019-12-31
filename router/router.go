@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/stone955/my-gin-blog/pkg/setting"
+	api "github.com/stone955/my-gin-blog/router/api"
 )
 
 func Register() *gin.Engine {
@@ -11,10 +12,12 @@ func Register() *gin.Engine {
 	r.Use(gin.Recovery())
 	gin.SetMode(setting.RunMode)
 
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "test",
-		})
-	})
+	g := r.Group("/api")
+
+	g.GET("/tags", api.GetTags)
+	g.POST("/tags", api.AddTag)
+	g.PUT("/tags/:id", api.EditTag)
+	g.DELETE("/tags/:id", api.DeleteTag)
+
 	return r
 }

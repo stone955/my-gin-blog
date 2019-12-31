@@ -9,6 +9,7 @@ replace (
 	github.com/stone955/my-gin-blog/pkg/e => ./pkg/e
 	github.com/stone955/my-gin-blog/pkg/setting => ./pkg/setting
 	github.com/stone955/my-gin-blog/router => ./router
+	github.com/stone955/my-gin-blog/router/api => ./router/api
 )
 
 require (
@@ -19,4 +20,5 @@ require (
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/unknwon/com v1.0.1
 	gopkg.in/ini.v1 v1.51.0 // indirect
+	gopkg.in/validator.v2 v2.0.0-20191107172027-c3144fdedc21
 )

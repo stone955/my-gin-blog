@@ -1,9 +1,12 @@
 package e
 
 const (
-	Success       = 200
-	Error         = 500
+	Create = 201
+	Ok     = 200
+	Delete = 204
+
 	InvalidParams = 400
+	Error         = 500
 
 	ErrorExistTag        = 10001
 	ErrorNotExistTag     = 10002
