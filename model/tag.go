@@ -14,18 +14,24 @@ type Tag struct {
 	State     int
 }
 
-func GetTags(page int, size int, query interface{}) []Tag {
-	var tags []Tag
-	db.Where(query).Offset(page).Limit(size).Find(&tags)
-	return tags
+func GetTags(page int, size int, query interface{}) ([]*Tag, error) {
+	var tags []*Tag
+	if err := db.Where(query).Offset(page).Limit(size).Find(tags).Error; err != nil {
+		return nil, err
+	}
+	return tags, nil
 }
 
-func AddTag(name string, state int, createdBy string) {
-	db.Create(&Tag{
+func AddTag(name string, state int, createdBy string) (*Tag, error) {
+	tag := &Tag{
 		Name:      name,
 		CreatedBy: createdBy,
 		State:     state,
-	})
+	}
+	if err := db.Create(tag).Error; err != nil {
+		return nil, err
+	}
+	return tag, nil
 }
 
 func (t *Tag) BeforeSave(scope *gorm.Scope) {

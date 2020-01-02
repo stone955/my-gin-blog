@@ -16,12 +16,12 @@ import (
 type Tag struct {
 	ID        uint       `json:"id"`
 	Name      string     `json:"name"`
-	CreatedBy string     `json:"created_by"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedBy string     `json:"updated_by"`
-	UpdatedAt time.Time  `json:"updated_at"`
-	DeletedBy string     `json:"deleted_by"`
-	DeletedAt *time.Time `json:"deleted_at"`
+	CreatedBy string     `json:"created_by,omitempty"`
+	CreatedAt time.Time  `json:"created_at,omitempty"`
+	UpdatedBy string     `json:"updated_by,omitempty"`
+	UpdatedAt time.Time  `json:"updated_at,omitempty"`
+	DeletedBy string     `json:"deleted_by,omitempty"`
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	State     int        `json:"state"`
 }
 
@@ -44,7 +44,11 @@ func GetTags(c *gin.Context) {
 
 	data := make([]Tag, 0)
 
-	tags := model.GetTags(util.GetPage(c), setting.PageSize, query)
+	tags, err := model.GetTags(util.GetPage(c), setting.PageSize, query)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, H(e.Error, data))
+		return
+	}
 
 	if len(tags) > 0 {
 		for _, tag := range tags {
@@ -62,9 +66,7 @@ func GetTags(c *gin.Context) {
 		}
 	}
 
-	code := e.Ok
-
-	c.JSON(http.StatusOK, H(code, data))
+	c.JSON(http.StatusOK, H(e.Ok, data))
 }
 
 // AddTag 添加新标签
@@ -94,7 +96,14 @@ func AddTag(c *gin.Context) {
 	}
 
 	// 封装结构体
-	model.AddTag(tag.Name, tag.State, tag.CreatedBy)
+	t, err := model.AddTag(tag.Name, tag.State, tag.CreatedBy)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, H(e.Error, struct{}{}))
+		return
+	}
+	tag.ID = t.ID
+	tag.CreatedAt = t.CreatedAt
+	tag.UpdatedAt = t.UpdatedAt
 	c.JSON(http.StatusCreated, H(e.Create, &tag))
 }
 

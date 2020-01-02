@@ -43,3 +43,5 @@ CREATE TABLE `t_blog_auth` (
 INSERT INTO `t_blog_auth` (`username`, `password`) VALUES ('admin', '123456');
 ````
 
+## 编译
+go build -o my-gin-blog main.go
