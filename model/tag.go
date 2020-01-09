@@ -14,22 +14,22 @@ type Tag struct {
 	State     int
 }
 
-func GetTags(page int, size int, query interface{}) ([]*Tag, error) {
-	var tags []*Tag
-	if err := db.Where(query).Offset(page).Limit(size).Find(tags).Error; err != nil {
+func GetTags(page int, size int, query interface{}) ([]Tag, error) {
+	var tags []Tag
+	if err := db.Where(query).Offset(page).Limit(size).Find(&tags).Error; err != nil {
 		return nil, err
 	}
 	return tags, nil
 }
 
-func AddTag(name string, state int, createdBy string) (*Tag, error) {
-	tag := &Tag{
+func AddTag(name string, state int, createdBy string) (Tag, error) {
+	tag := Tag{
 		Name:      name,
 		CreatedBy: createdBy,
 		State:     state,
 	}
-	if err := db.Create(tag).Error; err != nil {
-		return nil, err
+	if err := db.Create(&tag).Error; err != nil {
+		return Tag{}, err
 	}
 	return tag, nil
 }

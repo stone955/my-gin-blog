@@ -7,7 +7,7 @@ import (
 
 type Article struct {
 	gorm.Model
-	TagId uint
+	TagID uint
 	Tag   Tag
 
 	Title   string
