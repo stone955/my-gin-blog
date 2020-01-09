@@ -2,6 +2,10 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	_ "github.com/stone955/my-gin-blog/docs"
 	"github.com/stone955/my-gin-blog/middleware/jwt"
 	"github.com/stone955/my-gin-blog/pkg/setting"
 	"github.com/stone955/my-gin-blog/router/api"
@@ -16,6 +20,9 @@ func Register() *gin.Engine {
 
 	// Jwt
 	r.GET("/auth", api.GetAuth)
+
+	// swagger
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	g := r.Group("/api/v1")
 

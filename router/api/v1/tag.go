@@ -25,6 +25,12 @@ type Tag struct {
 	State     int        `json:"state"`
 }
 
+// @Summary 新增文章标签
+// @Produce json
+// @Param name query string false "Name"
+// @Param state query string false "State"
+// @Success 200 {string} string "{"code": 200,"data": {},"msg": "ok"}"
+// @Router /api/v1/tags [get]
 // GetTags 查询所有标签
 // curl localhost:8080/api/v1/tags?token=
 func GetTags(c *gin.Context) {

@@ -45,3 +45,27 @@ INSERT INTO `t_blog_auth` (`username`, `password`) VALUES ('admin', '123456');
 
 ## 编译
 go build -o my-gin-blog main.go
+
+## 集成Swagger
+### 安装swag
+````
+go get github.com/swaggo/swag/cmd/swag
+````
+````
+-- 验证安装是否成功
+swag -v
+swag version v1.6.4
+````
+### 安装gin-swagger
+````
+go get github.com/swaggo/gin-swagger
+go get github.com/swaggo/gin-swagger/swaggerFiles
+````
+
+### 添加注释
+（略）
+### 生成
+````
+-- 进入项目根目录
+[root@localhost my-gin-blog]# swag init
+````
