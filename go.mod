@@ -2,19 +2,6 @@ module github.com/stone955/my-gin-blog
 
 go 1.13
 
-replace (
-	github.com/stone955/my-gin-blog/do => ./router/api
-	github.com/stone955/my-gin-blog/docs => ./docs
-	github.com/stone955/my-gin-blog/docs/api => ./router/api
-	github.com/stone955/my-gin-blog/middleware => ./middleware
-	github.com/stone955/my-gin-blog/middleware/jwt => ./middleware/jwt
-	github.com/stone955/my-gin-blog/model => ./model
-	github.com/stone955/my-gin-blog/pkg/e => ./pkg/e
-	github.com/stone955/my-gin-blog/pkg/setting => ./pkg/setting
-	github.com/stone955/my-gin-blog/router => ./router
-	github.com/stone955/my-gin-blog/router/api => ./router/api
-)
-
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
