@@ -1,4 +1,4 @@
-package router
+package v1
 
 import (
 	"github.com/gin-gonic/gin"
@@ -26,7 +26,7 @@ type Tag struct {
 }
 
 // GetTags 查询所有标签
-// curl localhost:8080/api/tags
+// curl localhost:8080/api/v1/tags
 func GetTags(c *gin.Context) {
 	query := make(map[string]interface{})
 
@@ -76,7 +76,7 @@ func GetTag(c *gin.Context) {
 }
 
 // AddTag 添加新标签
-// curl -X POST localhost:8080/api/tags -d "{\"name\":\"golang\",\"state\":1,\"created_by\":\"admin\"}"
+// curl -X POST localhost:8080/api/v1/tags -d "{\"name\":\"golang\",\"state\":1,\"created_by\":\"admin\"}"
 func AddTag(c *gin.Context) {
 	var tag Tag
 	if err := c.BindJSON(&tag); err != nil {
