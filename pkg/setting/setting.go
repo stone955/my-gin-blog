@@ -19,8 +19,8 @@ var (
 func init() {
 	// 加载配置文件
 	var err error
-	if Cfg, err = ini.Load("conf/app.ini"); err != nil {
-		log.Fatalf("Fatal to load 'conf/app.ini': %v\n", err)
+	if Cfg, err = ini.Load("app.ini"); err != nil {
+		log.Fatalf("Fatal to load 'app.ini': %v\n", err)
 	}
 
 	loadBase()

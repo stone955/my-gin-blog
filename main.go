@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/stone955/my-gin-blog/pkg/setting"
-	"github.com/stone955/my-gin-blog/router"
 	"log"
 	"net/http"
 	"os"
@@ -15,7 +14,7 @@ import (
 )
 
 func main() {
-	r := router.Register()
+	r := Register()
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", setting.HTTPPort),
 		Handler:      r,

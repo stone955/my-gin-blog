@@ -1,9 +1,9 @@
-package router
+package main
 
 import (
 	"github.com/gin-gonic/gin"
+	api "github.com/stone955/my-gin-blog/api"
 	"github.com/stone955/my-gin-blog/pkg/setting"
-	api "github.com/stone955/my-gin-blog/router/api"
 )
 
 func Register() *gin.Engine {
