@@ -27,7 +27,7 @@ func main() {
 	// 优雅关闭
 	exit := make(chan os.Signal)
 	//监听 Ctrl+C 信号
-	signal.Notify(exit, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(exit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 	go func() {
 		<-exit
 		wg.Add(1)
