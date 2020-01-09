@@ -1,0 +1,24 @@
+info:
+  contact: {}
+  license: {}
+paths:
+  /api/v1/tags:
+    get:
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: State
+        in: query
+        name: state
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 200,"data": {},"msg": "ok"}'
+          schema:
+            type: string
+      summary: 新增文章标签
+swagger: "2.0"
