@@ -13,10 +13,19 @@ func Register() *gin.Engine {
 
 	g := r.Group("/api")
 
+	// 标签
 	g.GET("/tags", GetTags)
+	g.GET("/tags/:id", GetTag)
 	g.POST("/tags", AddTag)
 	g.PUT("/tags/:id", EditTag)
 	g.DELETE("/tags/:id", DeleteTag)
+
+	// 文章
+	g.GET("/articles", GetArticles)
+	g.GET("/articles/:id", GetArticle)
+	g.POST("/articles", AddArticle)
+	g.PUT("/articles/:id", EditArticle)
+	g.DELETE("/articles/:id", DeleteArticle)
 
 	return r
 }

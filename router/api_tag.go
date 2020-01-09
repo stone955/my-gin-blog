@@ -69,6 +69,12 @@ func GetTags(c *gin.Context) {
 	c.JSON(http.StatusOK, H(e.Ok, data))
 }
 
+// GetTag 查询指定标签
+// curl localhost:8080/api/tags/:id
+func GetTag(c *gin.Context) {
+
+}
+
 // AddTag 添加新标签
 // curl -X POST localhost:8080/api/tags -d "{\"name\":\"golang\",\"state\":1,\"created_by\":\"admin\"}"
 func AddTag(c *gin.Context) {
