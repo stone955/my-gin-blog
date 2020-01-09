@@ -24,6 +24,7 @@ func GetAuth(c *gin.Context) {
 	username = c.GetHeader("username")
 	password = c.GetHeader("password")
 	code = e.InvalidParams
+	data = make(map[string]interface{})
 
 	log.Printf("Request header username: %v, password: %v\n", username, password)
 
