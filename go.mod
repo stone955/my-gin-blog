@@ -4,6 +4,7 @@ go 1.13
 
 replace (
 	github.com/stone955/my-gin-blog/middleware => ./middleware
+	github.com/stone955/my-gin-blog/middleware/jwt => ./middleware/jwt
 	github.com/stone955/my-gin-blog/model => ./model
 	github.com/stone955/my-gin-blog/pkg/e => ./pkg/e
 	github.com/stone955/my-gin-blog/pkg/setting => ./pkg/setting
@@ -11,6 +12,7 @@ replace (
 )
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-ini/ini v1.51.1
 	github.com/jinzhu/gorm v1.9.11

@@ -40,7 +40,7 @@ func init() {
 	}
 
 	// 自动建表
-	db.AutoMigrate(&Tag{}, &Article{})
+	db.AutoMigrate(&Tag{}, &Article{}, &Auth{})
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(10)
