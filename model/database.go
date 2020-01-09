@@ -39,7 +39,8 @@ func init() {
 		return tablePrefix + defaultTableName
 	}
 
-	db.AutoMigrate(&Tag{})
+	// 自动建表
+	db.AutoMigrate(&Tag{}, &Article{})
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(10)
