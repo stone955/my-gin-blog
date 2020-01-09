@@ -29,7 +29,7 @@ func GenerateToken(username, password string) (string, error) {
 	}
 
 	// 加密
-	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// 签名
 	token, err := tokenClaims.SignedString(jwtSecret)
 

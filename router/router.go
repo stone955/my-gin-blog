@@ -4,7 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stone955/my-gin-blog/middleware/jwt"
 	"github.com/stone955/my-gin-blog/pkg/setting"
-	"github.com/stone955/my-gin-blog/router/v1"
+	"github.com/stone955/my-gin-blog/router/api"
+	"github.com/stone955/my-gin-blog/router/api/v1"
 )
 
 func Register() *gin.Engine {
@@ -13,13 +14,13 @@ func Register() *gin.Engine {
 	r.Use(gin.Recovery())
 	gin.SetMode(setting.RunMode)
 
+	// Jwt
+	r.GET("/auth", api.GetAuth)
+
 	g := r.Group("/api/v1")
 
 	// 添加中间件
 	g.Use(jwt.JWT())
-
-	// Jwt
-	g.GET("/auth", v1.GetAuth)
 
 	// 标签
 	g.GET("/tags", v1.GetTags)

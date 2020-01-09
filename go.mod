@@ -9,6 +9,7 @@ replace (
 	github.com/stone955/my-gin-blog/pkg/e => ./pkg/e
 	github.com/stone955/my-gin-blog/pkg/setting => ./pkg/setting
 	github.com/stone955/my-gin-blog/router => ./router
+	github.com/stone955/my-gin-blog/router/api => ./router/api
 )
 
 require (

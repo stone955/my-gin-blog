@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/util"
-	v1 "github.com/stone955/my-gin-blog/router/v1"
+	v1 "github.com/stone955/my-gin-blog/router/api/v1"
 	"net/http"
 	"time"
 )
