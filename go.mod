@@ -3,13 +3,11 @@ module github.com/stone955/my-gin-blog
 go 1.13
 
 replace (
-	github.com/stone955/my-gin-blog/conf => ./pkg/conf
 	github.com/stone955/my-gin-blog/middleware => ./middleware
 	github.com/stone955/my-gin-blog/model => ./model
 	github.com/stone955/my-gin-blog/pkg/e => ./pkg/e
 	github.com/stone955/my-gin-blog/pkg/setting => ./pkg/setting
 	github.com/stone955/my-gin-blog/router => ./router
-	github.com/stone955/my-gin-blog/router/api => ./router/api
 )
 
 require (

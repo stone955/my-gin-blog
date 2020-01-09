@@ -1,8 +1,7 @@
-package main
+package router
 
 import (
 	"github.com/gin-gonic/gin"
-	api "github.com/stone955/my-gin-blog/api"
 	"github.com/stone955/my-gin-blog/pkg/setting"
 )
 
@@ -14,10 +13,10 @@ func Register() *gin.Engine {
 
 	g := r.Group("/api")
 
-	g.GET("/tags", api.GetTags)
-	g.POST("/tags", api.AddTag)
-	g.PUT("/tags/:id", api.EditTag)
-	g.DELETE("/tags/:id", api.DeleteTag)
+	g.GET("/tags", GetTags)
+	g.POST("/tags", AddTag)
+	g.PUT("/tags/:id", EditTag)
+	g.DELETE("/tags/:id", DeleteTag)
 
 	return r
 }
