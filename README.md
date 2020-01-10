@@ -89,10 +89,15 @@ docker-engine
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
+# 设置镜像仓库
+curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io
+
 # 安装并启动 docker
 yum install -y docker-ce{-18.09.9} 
 systemctl enable docker
 systemctl start docker
+systemctl stop docker
+systemctl restart docker
 ````
 
 ### 编写 Dockerfile
@@ -155,3 +160,8 @@ docker rmi 80a0a9a255ac
 ````
 
 ### mysql 容器化
+
+#### 拉取 mysql 镜像
+````
+[root@localhost my-gin-blog]# docker pull mysql
+````
