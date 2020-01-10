@@ -144,6 +144,8 @@ CONTAINER ID        IMAGE                COMMAND             CREATED            
 ````
 # 查看 container
 docker ps
+# 查看 关联的容器
+docker ps -a
 # 停止运行中的 container
 docker stop 5b25ed2ed214
 # 删除 container
@@ -151,3 +153,5 @@ docker rm 5b25ed2ed214
 # 删除 image
 docker rmi 80a0a9a255ac
 ````
+
+### mysql 容器化
