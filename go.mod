@@ -10,6 +10,7 @@ require (
 	github.com/go-ini/ini v1.51.1
 	github.com/jinzhu/gorm v1.9.11
 	github.com/smartystreets/goconvey v1.6.4 // indirect
+	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.4
 	github.com/unknwon/com v1.0.1
 	gopkg.in/ini.v1 v1.51.0 // indirect
