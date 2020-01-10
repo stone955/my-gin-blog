@@ -89,8 +89,13 @@ docker-engine
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
-# 设置镜像仓库
-curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io
+# 设置镜像仓库（可选）
+vi /etc/docker/daemon.json
+
+{
+    "registry-mirrors": ["https://registry.docker-cn.com"]
+}
+
 
 # 安装并启动 docker
 yum install -y docker-ce{-18.09.9} 
@@ -163,5 +168,17 @@ docker rmi 80a0a9a255ac
 
 #### 拉取 mysql 镜像
 ````
+# 如果失败就多试几次或配置国内镜像仓库
 [root@localhost my-gin-blog]# docker pull mysql
+Using default tag: latest
+latest: Pulling from library/mysql
+Digest: sha256:e1b0fd480a11e5c37425a2591b6fbd32af886bfc6d6f404bd362be5e50a2e632
+Status: Image is up to date for mysql:latest
+docker.io/library/mysql:latest
+````
+
+#### 运行 mysql 容器
+````
+[root@localhost my-gin-blog]# docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql
+46115d4847e53d030344e94c26d10c2167e348c6ed95fbdbb2f7a90b6b20c6aa
 ````
