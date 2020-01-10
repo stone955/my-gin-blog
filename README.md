@@ -69,3 +69,85 @@ go get github.com/swaggo/gin-swagger/swaggerFiles
 -- 进入项目根目录
 [root@localhost my-gin-blog]# swag init
 ````
+
+## 部署到 Docker
+### 安装 Docker
+````
+# 卸载旧版本
+yum remove -y docker \
+docker-client \
+docker-client-latest \
+docker-common \
+docker-latest \
+docker-latest-logrotate \
+docker-logrotate \
+docker-selinux \
+docker-engine-selinux \
+docker-engine
+
+# 设置 yum repository
+yum install -y yum-utils device-mapper-persistent-data lvm2
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+# 安装并启动 docker
+yum install -y docker-ce{-18.09.9} 
+systemctl enable docker
+systemctl start docker
+````
+
+### 编写 Dockerfile
+
+### 构建镜像
++ 进入 my-gin-blog 根目录
+````
+docker build -t my-gin-blog-docker .
+````
+
+### 验证镜像
+````
+[root@localhost my-gin-blog]# docker images
+REPOSITORY           TAG                 IMAGE ID            CREATED                  SIZE
+golang               latest              272e3f68338f        Less than a second ago   803MB
+my-gin-blog-docker   latest              80a0a9a255ac        16 seconds ago           1.11GB
+````
+
+### 创建并运行一个容器
+````
+[root@localhost my-gin-blog]# docker run -p 8080:8080 my-gin-blog-docker
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /auth                     --> github.com/stone955/my-gin-blog/router/api.GetAuth (3 handlers)
+[GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
+[GIN-debug] GET    /api/v1/tags              --> github.com/stone955/my-gin-blog/router/api/v1.GetTags (4 handlers)
+[GIN-debug] GET    /api/v1/tags/:id          --> github.com/stone955/my-gin-blog/router/api/v1.GetTag (4 handlers)
+[GIN-debug] POST   /api/v1/tags              --> github.com/stone955/my-gin-blog/router/api/v1.AddTag (4 handlers)
+[GIN-debug] PUT    /api/v1/tags/:id          --> github.com/stone955/my-gin-blog/router/api/v1.EditTag (4 handlers)
+[GIN-debug] DELETE /api/v1/tags/:id          --> github.com/stone955/my-gin-blog/router/api/v1.DeleteTag (4 handlers)
+[GIN-debug] GET    /api/v1/articles          --> github.com/stone955/my-gin-blog/router/api/v1.GetArticles (4 handlers)
+[GIN-debug] GET    /api/v1/articles/:id      --> github.com/stone955/my-gin-blog/router/api/v1.GetArticle (4 handlers)
+[GIN-debug] POST   /api/v1/articles          --> github.com/stone955/my-gin-blog/router/api/v1.AddArticle (4 handlers)
+[GIN-debug] PUT    /api/v1/articles/:id      --> github.com/stone955/my-gin-blog/router/api/v1.EditArticle (4 handlers)
+[GIN-debug] DELETE /api/v1/articles/:id      --> github.com/stone955/my-gin-blog/router/api/v1.DeleteArticle (4 handlers)
+2020/01/05 09:48:30 Actual pid is 1
+````
+
+### 验证容器实例
+````
+[root@localhost ~]# docker ps
+CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                    NAMES
+5b25ed2ed214        my-gin-blog-docker   "./my-gin-blog"     15 minutes ago      Up 15 minutes       0.0.0.0:8080->8080/tcp   romantic_sutherland
+````
+
+### 删除镜像
+````
+# 查看 container
+docker ps
+# 停止运行中的 container
+docker stop 5b25ed2ed214
+# 删除 container
+docker rm 5b25ed2ed214
+# 删除 image
+docker rmi 80a0a9a255ac
+````
