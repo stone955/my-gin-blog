@@ -179,6 +179,6 @@ docker.io/library/mysql:latest
 
 #### 运行 mysql 容器
 ````
-[root@localhost my-gin-blog]# docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql
+[root@localhost my-gin-blog]# docker run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=my-gin-blog-docker -p 3306:3306 --name mysql --default-authentication-plugin=mysql_native_password
 46115d4847e53d030344e94c26d10c2167e348c6ed95fbdbb2f7a90b6b20c6aa
 ````
