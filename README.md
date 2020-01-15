@@ -179,6 +179,17 @@ docker.io/library/mysql:latest
 
 #### 运行 mysql 容器
 ````
-[root@localhost my-gin-blog]# docker run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=my-gin-blog-docker -p 3306:3306 --name mysql --default-authentication-plugin=mysql_native_password
-46115d4847e53d030344e94c26d10c2167e348c6ed95fbdbb2f7a90b6b20c6aa
+# 这种方式没有挂载数据卷，容器每次重启或删除后数据会丢失
+[root@localhost ~]# docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql --default-authentication-plugin=mysql_native_password
+ab9b21764f583e58995e9f1466816d6295e5ec519c025b073cdf5898b4832c81
+# 进入容器命令行
+docker exec -it 236b2624632d bash
+# 修改默认的密码验证插件
+# mysql -uroot -p 
+# ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
+
+# 挂载数据卷
+[root@localhost ~]# mkdir -p /root/docker-mysql/data
+[root@localhost ~]# chmod -R 777 /root/docker-mysql/*
+[root@localhost ~]# docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -v /root/docker-mysql/data:/var/lib/mysql -d mysql --default-authentication-plugin=mysql_native_password
 ````
