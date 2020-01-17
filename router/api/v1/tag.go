@@ -2,7 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/stone955/my-gin-blog/model"
+	"github.com/stone955/my-gin-blog/models"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/setting"
 	"github.com/stone955/my-gin-blog/pkg/util"
@@ -50,7 +50,7 @@ func GetTags(c *gin.Context) {
 
 	data := make([]Tag, 0)
 
-	tags, err := model.GetTags(util.GetPage(c), setting.PageSize, query)
+	tags, err := models.GetTags(util.GetPage(c), setting.AppCfg.PageSize, query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, H(e.Error, data))
 		return
@@ -108,7 +108,7 @@ func AddTag(c *gin.Context) {
 	}
 
 	// 封装结构体
-	t, err := model.AddTag(tag.Name, tag.State, tag.CreatedBy)
+	t, err := models.AddTag(tag.Name, tag.State, tag.CreatedBy)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, H(e.Error, struct{}{}))
 		return

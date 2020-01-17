@@ -6,54 +6,63 @@ import (
 	"time"
 )
 
-var (
-	Cfg          *ini.File
+var AppCfg = &AppSetting{}
+
+type AppSetting struct {
+	JwtSecret       string
+	PageSize        int
+	RuntimeRootPath string
+
+	ImagePrefixUrl     string
+	ImageSavePath      string
+	ImageMaxSize       int
+	ImageAllowExtNames []string
+
+	LogSavePath string
+	LogSaveName string
+	LogFileExt  string
+	TimeFormat  string
+}
+
+var ServerCfg = &ServerSetting{}
+
+type ServerSetting struct {
 	RunMode      string
 	HTTPPort     int
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
-	PageSize     int
-	JwtSecret    string
-)
+}
 
-func init() {
+var DatabaseCfg = &DatabaseSetting{}
+
+type DatabaseSetting struct {
+	Type        string
+	Name        string
+	User        string
+	Password    string
+	Host        string
+	TablePrefix string
+}
+
+func Setup() {
 	// 加载配置文件
-	var err error
-	if Cfg, err = ini.Load("config/app.ini"); err != nil {
+	cfg, err := ini.Load("config/app.ini")
+	if err != nil {
 		log.Fatalf("Fatal to load 'app.ini': %v\n", err)
 	}
 
-	loadBase()
-
-	loadServer()
-
-	loadApp()
-}
-
-func loadBase() {
-	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("DEBUG")
-}
-
-func loadServer() {
-	sec, err := Cfg.GetSection("server")
-	if err != nil {
-		log.Fatalf("Fatal to get section 'server': %v\n", err)
+	if err := cfg.Section("app").MapTo(AppCfg); err != nil {
+		log.Fatalf("Cfg.MapTo AppSetting err: %v", err)
 	}
+	AppCfg.ImageMaxSize = AppCfg.ImageMaxSize * 1024 * 1024
 
-	HTTPPort = sec.Key("HTTP_PORT").MustInt(8080)
-	if ReadTimeout, err = time.ParseDuration(sec.Key("READ_TIMEOUT").MustString("60s")); err != nil {
-		log.Fatalf("Fatal to parse duration 'READ_TIMEOUT': %v\n", err)
+	if err := cfg.Section("server").MapTo(ServerCfg); err != nil {
+		log.Fatalf("Cfg.MapTo ServerSetting err: %v\n", err)
 	}
-	if WriteTimeout, err = time.ParseDuration(sec.Key("WRITE_TIMEOUT").MustString("60s")); err != nil {
-		log.Fatalf("Fatal to parse duration 'WRITE_TIMEOUT': %v\n", err)
-	}
-}
+	ServerCfg.ReadTimeout = ServerCfg.ReadTimeout * time.Second
+	ServerCfg.WriteTimeout = ServerCfg.WriteTimeout * time.Second
 
-func loadApp() {
-	sec, err := Cfg.GetSection("app")
-	if err != nil {
-		log.Fatalf("Fatal to get section 'app': %v\n", err)
+	if err := cfg.Section("database").MapTo(DatabaseCfg); err != nil {
+		log.Fatalf("Cfg.MapTo DatabaseSetting err: %v\n", err)
 	}
-	JwtSecret = sec.Key("JWT_SECRET").MustString("!@)*#)!@U#@*!@!)")
-	PageSize = sec.Key("PAGE_SIZE").MustInt(10)
 }

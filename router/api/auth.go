@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/stone955/my-gin-blog/model"
+	"github.com/stone955/my-gin-blog/models"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/util"
 	"github.com/stone955/my-gin-blog/router/api/v1"
@@ -40,7 +40,7 @@ func GetAuth(c *gin.Context) {
 		return
 	}
 
-	b := model.CheckAuth(username, password)
+	b := models.CheckAuth(username, password)
 	if !b {
 		code = e.ErrorAuth
 	} else {

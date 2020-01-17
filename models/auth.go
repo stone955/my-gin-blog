@@ -1,4 +1,4 @@
-package model
+package models
 
 type Auth struct {
 	ID       uint `gorm:"primary_key"`

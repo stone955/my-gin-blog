@@ -16,7 +16,7 @@ func Register() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	gin.SetMode(setting.RunMode)
+	gin.SetMode(setting.ServerCfg.RunMode)
 
 	// Jwt
 	r.GET("/auth", api.GetAuth)
