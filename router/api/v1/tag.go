@@ -32,7 +32,7 @@ type Tag struct {
 // @Success 200 {string} string "{"code": 200,"data": {},"msg": "ok"}"
 // @Router /api/v1/tags [get]
 // GetTags 查询所有标签
-// curl localhost:8080/api/v1/tags?token=
+// curl 192.168.1.108:8080/api/v1/tags?token=
 func GetTags(c *gin.Context) {
 	query := make(map[string]interface{})
 
@@ -76,13 +76,13 @@ func GetTags(c *gin.Context) {
 }
 
 // GetTag 查询指定标签
-// curl localhost:8080/api/tags/:id?token=
+// curl 192.168.1.108:8080/api/tags/:id?token=
 func GetTag(c *gin.Context) {
 
 }
 
 // AddTag 添加新标签
-// curl -X POST localhost:8080/api/v1/tags?token= -d "{\"name\":\"golang\",\"state\":1,\"created_by\":\"admin\"}"
+// curl -X POST 192.168.1.108:8080/api/v1/tags?token= -d "{\"name\":\"golang\",\"state\":1,\"created_by\":\"admin\"}"
 func AddTag(c *gin.Context) {
 	var tag Tag
 	if err := c.BindJSON(&tag); err != nil {

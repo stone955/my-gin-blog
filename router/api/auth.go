@@ -12,7 +12,7 @@ import (
 )
 
 // GetAuth 通过用户名、密码生成 token
-// curl localhost:8080/auth -H "username:admin" -H "password:123456"
+// curl 192.168.1.108:8080/auth -H "username:admin" -H "password:123456"
 func GetAuth(c *gin.Context) {
 	var (
 		username string

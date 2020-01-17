@@ -193,3 +193,29 @@ docker exec -it 236b2624632d bash
 [root@localhost ~]# chmod -R 777 /root/docker-mysql/*
 [root@localhost ~]# docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -v /root/docker-mysql/data:/var/lib/mysql -d mysql --default-authentication-plugin=mysql_native_password
 ````
+
+### 构建 scratch 镜像
+Scratch镜像，简洁、小巧，基本是个空镜像
+
+#### 修改 Dockerfile
+````
+FROM scratch
+
+WORKDIR /app/my-gin-blog
+COPY . /app/my-gin-blog
+
+EXPOSE 8080
+CMD ["./my-gin-blog"]
+````
+
+#### 编译可执行文件
+````
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o my-gin-blog .
+````
+
+#### 构建镜像
+````
+docker build -t my-gin-blog-docker-scratch .
+````
+
+#### 运行镜像
