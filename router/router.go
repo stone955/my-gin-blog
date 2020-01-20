@@ -2,8 +2,10 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/stone955/my-gin-blog/pkg/upload"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"net/http"
 
 	_ "github.com/stone955/my-gin-blog/docs"
 	"github.com/stone955/my-gin-blog/middleware/jwt"
@@ -23,6 +25,11 @@ func Register() *gin.Engine {
 
 	// swagger
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// upload
+	r.POST("/upload", api.UploadImage)
+
+	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 
 	g := r.Group("/api/v1")
 

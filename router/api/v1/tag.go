@@ -6,6 +6,7 @@ import (
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/setting"
 	"github.com/stone955/my-gin-blog/pkg/util"
+	"github.com/stone955/my-gin-blog/router/api"
 	"github.com/unknwon/com"
 	"gopkg.in/validator.v2"
 	"log"
@@ -52,7 +53,7 @@ func GetTags(c *gin.Context) {
 
 	tags, err := models.GetTags(util.GetPage(c), setting.AppCfg.PageSize, query)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, H(e.Error, data))
+		c.JSON(http.StatusInternalServerError, api.H(e.Error, data))
 		return
 	}
 
@@ -72,7 +73,7 @@ func GetTags(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, H(e.Ok, data))
+	c.JSON(http.StatusOK, api.H(e.Ok, data))
 }
 
 // GetTag 查询指定标签
@@ -87,36 +88,36 @@ func AddTag(c *gin.Context) {
 	var tag Tag
 	if err := c.BindJSON(&tag); err != nil {
 		log.Printf("Error to bind json: %v\n", err)
-		c.JSON(http.StatusBadRequest, H(e.InvalidParams, struct{}{}))
+		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
 		return
 	}
 
 	if err := validator.Valid(tag.Name, "nonzero"); err != nil {
 		log.Printf("Error to validate 'name': %v\n", err)
-		c.JSON(http.StatusBadRequest, H(e.InvalidParams, struct{}{}))
+		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
 		return
 	}
 	if err := validator.Valid(tag.CreatedBy, "nonzero"); err != nil {
 		log.Printf("Error to validate 'created_by': %v\n", err)
-		c.JSON(http.StatusBadRequest, H(e.InvalidParams, struct{}{}))
+		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
 		return
 	}
 	if err := validator.Valid(tag.State, "nonzero"); err != nil {
 		log.Printf("Error to validate 'state': %v\n", err)
-		c.JSON(http.StatusBadRequest, H(e.InvalidParams, struct{}{}))
+		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
 		return
 	}
 
 	// 封装结构体
 	t, err := models.AddTag(tag.Name, tag.State, tag.CreatedBy)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, H(e.Error, struct{}{}))
+		c.JSON(http.StatusInternalServerError, api.H(e.Error, struct{}{}))
 		return
 	}
 	tag.ID = t.ID
 	tag.CreatedAt = t.CreatedAt
 	tag.UpdatedAt = t.UpdatedAt
-	c.JSON(http.StatusCreated, H(e.Create, &tag))
+	c.JSON(http.StatusCreated, api.H(e.Create, &tag))
 }
 
 func EditTag(c *gin.Context) {

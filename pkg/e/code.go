@@ -16,4 +16,8 @@ const (
 	ErrorAuthCheckTokenTimeout = 20002
 	ErrorAuthToken             = 20003
 	ErrorAuth                  = 20004
+
+	ErrorUploadCheckImageFormat = 30001
+	ErrorUploadCheckImageFail   = 30002
+	ErrorUploadSaveImageFail    = 30003
 )

@@ -15,6 +15,8 @@ type Article struct {
 	Content string
 	State   int
 
+	CoverImageUrl string
+
 	CreatedBy string
 	UpdatedBy string
 	DeletedBy string

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/util"
-	v1 "github.com/stone955/my-gin-blog/router/api/v1"
+	"github.com/stone955/my-gin-blog/router/api"
 	"net/http"
 	"time"
 )
@@ -31,7 +31,7 @@ func JWT() gin.HandlerFunc {
 		}
 
 		if code != e.Ok {
-			c.JSON(http.StatusUnauthorized, v1.H(code, data))
+			c.JSON(http.StatusUnauthorized, api.H(code, data))
 			c.Abort()
 			return
 		}

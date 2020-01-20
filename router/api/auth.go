@@ -5,7 +5,6 @@ import (
 	"github.com/stone955/my-gin-blog/models"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/util"
-	"github.com/stone955/my-gin-blog/router/api/v1"
 	"gopkg.in/validator.v2"
 	"log"
 	"net/http"
@@ -30,13 +29,13 @@ func GetAuth(c *gin.Context) {
 
 	if err := validator.Valid(username, "nonzero"); err != nil {
 		log.Printf("Error to validate 'username': %v\n", err)
-		c.JSON(http.StatusBadRequest, v1.H(code, struct{}{}))
+		c.JSON(http.StatusBadRequest, H(code, struct{}{}))
 		return
 	}
 
 	if err := validator.Valid(password, "nonzero"); err != nil {
 		log.Printf("Error to validate 'password': %v\n", err)
-		c.JSON(http.StatusBadRequest, v1.H(code, struct{}{}))
+		c.JSON(http.StatusBadRequest, H(code, struct{}{}))
 		return
 	}
 
@@ -53,5 +52,5 @@ func GetAuth(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, v1.H(code, data))
+	c.JSON(http.StatusOK, H(code, data))
 }
