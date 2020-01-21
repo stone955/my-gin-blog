@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-var jwtSecret = []byte(setting.JwtSecret)
-
 type Claims struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -31,7 +29,7 @@ func GenerateToken(username, password string) (string, error) {
 	// 加密
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// 签名
-	token, err := tokenClaims.SignedString(jwtSecret)
+	token, err := tokenClaims.SignedString(setting.AppCfg.JwtSecretBytes)
 
 	return token, err
 }
@@ -39,7 +37,7 @@ func GenerateToken(username, password string) (string, error) {
 // 解析 token
 func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+		return setting.AppCfg.JwtSecretBytes, nil
 	})
 
 	if tokenClaims != nil {

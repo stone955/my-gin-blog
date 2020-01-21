@@ -10,6 +10,7 @@ var AppCfg = &AppSetting{}
 
 type AppSetting struct {
 	JwtSecret       string
+	JwtSecretBytes  []byte
 	PageSize        int
 	RuntimeRootPath string
 
@@ -66,6 +67,7 @@ func Setup() {
 		log.Fatalf("Cfg.MapTo AppSetting err: %v", err)
 	}
 	AppCfg.ImageMaxSize = AppCfg.ImageMaxSize * 1024 * 1024
+	AppCfg.JwtSecretBytes = []byte(AppCfg.JwtSecret)
 
 	// [server]
 	if err := cfg.Section("server").MapTo(ServerCfg); err != nil {
