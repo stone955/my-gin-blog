@@ -3,10 +3,10 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/stone955/my-gin-blog/models"
+	"github.com/stone955/my-gin-blog/pkg/app"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/setting"
 	"github.com/stone955/my-gin-blog/pkg/util"
-	"github.com/stone955/my-gin-blog/router/api"
 	"github.com/unknwon/com"
 	"gopkg.in/validator.v2"
 	"log"
@@ -35,6 +35,12 @@ type Tag struct {
 // GetTags 查询所有标签
 // curl 192.168.1.108:8080/api/v1/tags?token=
 func GetTags(c *gin.Context) {
+
+	var (
+		appG = app.Gin{C: c}
+		data = make([]Tag, 0)
+	)
+
 	query := make(map[string]interface{})
 
 	name := c.Query("name")
@@ -49,31 +55,26 @@ func GetTags(c *gin.Context) {
 		query["state"] = state
 	}
 
-	data := make([]Tag, 0)
-
 	tags, err := models.GetTags(util.GetPage(c), setting.AppCfg.PageSize, query)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, api.H(e.Error, data))
+		appG.Response(http.StatusInternalServerError, e.Error, data)
 		return
 	}
 
-	if len(tags) > 0 {
-		for _, tag := range tags {
-			data = append(data, Tag{
-				ID:        tag.ID,
-				Name:      tag.Name,
-				CreatedAt: tag.CreatedAt,
-				CreatedBy: tag.CreatedBy,
-				UpdatedAt: tag.UpdatedAt,
-				UpdatedBy: tag.UpdatedBy,
-				DeletedAt: tag.DeletedAt,
-				DeletedBy: tag.DeletedBy,
-				State:     tag.State,
-			})
-		}
+	for _, tag := range tags {
+		data = append(data, Tag{
+			ID:        tag.ID,
+			Name:      tag.Name,
+			CreatedAt: tag.CreatedAt,
+			CreatedBy: tag.CreatedBy,
+			UpdatedAt: tag.UpdatedAt,
+			UpdatedBy: tag.UpdatedBy,
+			DeletedAt: tag.DeletedAt,
+			DeletedBy: tag.DeletedBy,
+			State:     tag.State,
+		})
 	}
-
-	c.JSON(http.StatusOK, api.H(e.Ok, data))
+	appG.Response(http.StatusOK, e.Ok, data)
 }
 
 // GetTag 查询指定标签
@@ -85,39 +86,44 @@ func GetTag(c *gin.Context) {
 // AddTag 添加新标签
 // curl -X POST 192.168.1.108:8080/api/v1/tags?token= -d "{\"name\":\"golang\",\"state\":1,\"created_by\":\"admin\"}"
 func AddTag(c *gin.Context) {
-	var tag Tag
-	if err := c.BindJSON(&tag); err != nil {
+
+	var (
+		appG = app.Gin{C: c}
+		data = Tag{}
+	)
+
+	if err := c.BindJSON(&data); err != nil {
 		log.Printf("Error to bind json: %v\n", err)
-		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
+		appG.Response(http.StatusBadRequest, e.InvalidParams, data)
 		return
 	}
 
-	if err := validator.Valid(tag.Name, "nonzero"); err != nil {
+	if err := validator.Valid(data.Name, "nonzero"); err != nil {
 		log.Printf("Error to validate 'name': %v\n", err)
-		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
+		appG.Response(http.StatusBadRequest, e.InvalidParams, data)
 		return
 	}
-	if err := validator.Valid(tag.CreatedBy, "nonzero"); err != nil {
+	if err := validator.Valid(data.CreatedBy, "nonzero"); err != nil {
 		log.Printf("Error to validate 'created_by': %v\n", err)
-		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
+		appG.Response(http.StatusBadRequest, e.InvalidParams, data)
 		return
 	}
-	if err := validator.Valid(tag.State, "nonzero"); err != nil {
+	if err := validator.Valid(data.State, "nonzero"); err != nil {
 		log.Printf("Error to validate 'state': %v\n", err)
-		c.JSON(http.StatusBadRequest, api.H(e.InvalidParams, struct{}{}))
+		appG.Response(http.StatusBadRequest, e.InvalidParams, data)
 		return
 	}
 
 	// 封装结构体
-	t, err := models.AddTag(tag.Name, tag.State, tag.CreatedBy)
+	t, err := models.AddTag(data.Name, data.State, data.CreatedBy)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, api.H(e.Error, struct{}{}))
+		appG.Response(http.StatusInternalServerError, e.Error, data)
 		return
 	}
-	tag.ID = t.ID
-	tag.CreatedAt = t.CreatedAt
-	tag.UpdatedAt = t.UpdatedAt
-	c.JSON(http.StatusCreated, api.H(e.Create, &tag))
+	data.ID = t.ID
+	data.CreatedAt = t.CreatedAt
+	data.UpdatedAt = t.UpdatedAt
+	appG.Response(http.StatusCreated, e.Create, data)
 }
 
 func EditTag(c *gin.Context) {

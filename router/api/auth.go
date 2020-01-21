@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/stone955/my-gin-blog/models"
+	"github.com/stone955/my-gin-blog/pkg/app"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/util"
 	"gopkg.in/validator.v2"
@@ -14,43 +15,37 @@ import (
 // curl 192.168.1.108:8080/auth -H "username:admin" -H "password:123456"
 func GetAuth(c *gin.Context) {
 	var (
-		username string
-		password string
-		code     int
-		data     map[string]interface{}
+		appG     = app.Gin{C: c}
+		username = c.GetHeader("username")
+		password = c.GetHeader("password")
+		data     = make(map[string]interface{})
 	)
-
-	username = c.GetHeader("username")
-	password = c.GetHeader("password")
-	code = e.InvalidParams
-	data = make(map[string]interface{})
 
 	log.Printf("Request header username: %v, password: %v\n", username, password)
 
 	if err := validator.Valid(username, "nonzero"); err != nil {
 		log.Printf("Error to validate 'username': %v\n", err)
-		c.JSON(http.StatusBadRequest, H(code, struct{}{}))
+		appG.Response(http.StatusBadRequest, e.InvalidParams, data)
 		return
 	}
 
 	if err := validator.Valid(password, "nonzero"); err != nil {
 		log.Printf("Error to validate 'password': %v\n", err)
-		c.JSON(http.StatusBadRequest, H(code, struct{}{}))
+		appG.Response(http.StatusBadRequest, e.InvalidParams, data)
 		return
 	}
 
-	b := models.CheckAuth(username, password)
-	if !b {
-		code = e.ErrorAuth
-	} else {
-		token, err := util.GenerateToken(username, password)
-		if err != nil {
-			code = e.ErrorAuthToken
-		} else {
-			code = e.Ok
-			data["token"] = token
-		}
+	if !models.CheckAuth(username, password) {
+		appG.Response(http.StatusUnauthorized, e.ErrorAuth, data)
+		return
 	}
 
-	c.JSON(http.StatusOK, H(code, data))
+	token, err := util.GenerateToken(username, password)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ErrorAuthToken, data)
+		return
+	}
+
+	data["token"] = token
+	appG.Response(http.StatusOK, e.Ok, data)
 }
