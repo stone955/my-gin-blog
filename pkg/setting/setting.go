@@ -9,12 +9,13 @@ import (
 var AppCfg = &AppSetting{}
 
 type AppSetting struct {
-	JwtSecret       string
-	JwtSecretBytes  []byte
-	PageSize        int
-	RuntimeRootPath string
+	JwtSecret      string
+	JwtSecretBytes []byte
+	PageSize       int
 
-	ImagePrefixUrl     string
+	RuntimeRootPath string
+	PrefixUrl       string
+
 	ImageSavePath      string
 	ImageMaxSize       int
 	ImageAllowExtNames []string
@@ -23,6 +24,8 @@ type AppSetting struct {
 	LogSaveName   string
 	LogFileExt    string
 	LogTimeFormat string
+
+	ExportSavePath string
 }
 
 var ServerCfg = &ServerSetting{}

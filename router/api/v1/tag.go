@@ -133,3 +133,11 @@ func EditTag(c *gin.Context) {
 func DeleteTag(c *gin.Context) {
 
 }
+
+func ExportTag(c *gin.Context) {
+
+}
+
+func ImportTag(c *gin.Context) {
+
+}

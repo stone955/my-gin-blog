@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/stone955/my-gin-blog/pkg/export"
 	"github.com/stone955/my-gin-blog/pkg/upload"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -30,6 +31,7 @@ func Register() *gin.Engine {
 	r.POST("/upload", api.UploadImage)
 
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
+	r.StaticFS("/export/excel", http.Dir(export.GetExcelFullPath()))
 
 	g := r.Group("/api/v1")
 
@@ -42,6 +44,8 @@ func Register() *gin.Engine {
 	g.POST("/tags", v1.AddTag)
 	g.PUT("/tags/:id", v1.EditTag)
 	g.DELETE("/tags/:id", v1.DeleteTag)
+	g.POST("/tags/export", v1.ExportTag)
+	g.POST("/tags/import", v1.ImportTag)
 
 	// 文章
 	g.GET("/articles", v1.GetArticles)
