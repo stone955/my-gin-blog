@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/stone955/my-gin-blog/models"
+	"github.com/stone955/my-gin-blog/pkg/gredis"
 	"github.com/stone955/my-gin-blog/pkg/logging"
 	"github.com/stone955/my-gin-blog/pkg/setting"
 	"github.com/stone955/my-gin-blog/router"
@@ -20,6 +21,7 @@ func main() {
 
 	setting.Setup()
 	logging.Setup()
+	gredis.Setup()
 	models.Setup()
 
 	r := router.Register()
@@ -41,6 +43,10 @@ func main() {
 		<-exit
 		wg.Add(1)
 		defer wg.Done()
+		// 关闭数据库连接
+		defer models.Close()
+		// 关闭缓存连接
+		defer gredis.Close()
 		//使用context控制srv.Shutdown的超时时间
 		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 		defer cancel()

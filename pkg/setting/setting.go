@@ -18,10 +18,10 @@ type AppSetting struct {
 	ImageMaxSize       int
 	ImageAllowExtNames []string
 
-	LogSavePath string
-	LogSaveName string
-	LogFileExt  string
-	TimeFormat  string
+	LogSavePath   string
+	LogSaveName   string
+	LogFileExt    string
+	LogTimeFormat string
 }
 
 var ServerCfg = &ServerSetting{}
@@ -44,6 +44,16 @@ type DatabaseSetting struct {
 	TablePrefix string
 }
 
+var RedisCfg = &RedisSetting{}
+
+type RedisSetting struct {
+	Host        string
+	Password    string
+	MaxIdle     int
+	MaxActive   int
+	IdleTimeout time.Duration
+}
+
 func Setup() {
 	// 加载配置文件
 	cfg, err := ini.Load("config/app.ini")
@@ -51,18 +61,26 @@ func Setup() {
 		log.Fatalf("Fatal to load 'app.ini': %v\n", err)
 	}
 
+	// [app]
 	if err := cfg.Section("app").MapTo(AppCfg); err != nil {
 		log.Fatalf("Cfg.MapTo AppSetting err: %v", err)
 	}
 	AppCfg.ImageMaxSize = AppCfg.ImageMaxSize * 1024 * 1024
 
+	// [server]
 	if err := cfg.Section("server").MapTo(ServerCfg); err != nil {
 		log.Fatalf("Cfg.MapTo ServerSetting err: %v\n", err)
 	}
 	ServerCfg.ReadTimeout = ServerCfg.ReadTimeout * time.Second
 	ServerCfg.WriteTimeout = ServerCfg.WriteTimeout * time.Second
 
+	// [database]
 	if err := cfg.Section("database").MapTo(DatabaseCfg); err != nil {
 		log.Fatalf("Cfg.MapTo DatabaseSetting err: %v\n", err)
+	}
+
+	// [redis]
+	if err := cfg.Section("redis").MapTo(RedisCfg); err != nil {
+		log.Fatalf("Cfg.MapTo RedisSetting err: %v\n", err)
 	}
 }

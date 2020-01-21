@@ -28,6 +28,6 @@ func Setup() {
 	db.DB().SetMaxOpenConns(10)
 }
 
-func CloseDB() {
-	defer db.Close()
+func Close() {
+	_ = db.Close()
 }

@@ -49,7 +49,7 @@ func getLogFilePath() string {
 func getLogFileName() string {
 	return fmt.Sprintf("%s_%s.%s",
 		setting.AppCfg.LogSaveName,
-		time.Now().Format(setting.AppCfg.TimeFormat),
+		time.Now().Format(setting.AppCfg.LogTimeFormat),
 		setting.AppCfg.LogFileExt)
 }
 
