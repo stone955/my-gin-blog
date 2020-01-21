@@ -2,9 +2,9 @@ package jwt
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/stone955/my-gin-blog/pkg/app"
 	"github.com/stone955/my-gin-blog/pkg/e"
 	"github.com/stone955/my-gin-blog/pkg/util"
-	"github.com/stone955/my-gin-blog/router/api"
 	"net/http"
 	"time"
 )
@@ -13,6 +13,7 @@ func JWT() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		var (
+			appG = app.Gin{C: c}
 			code int
 			data interface{}
 		)
@@ -31,7 +32,7 @@ func JWT() gin.HandlerFunc {
 		}
 
 		if code != e.Ok {
-			c.JSON(http.StatusUnauthorized, api.H(code, data))
+			appG.Response(http.StatusUnauthorized, code, data)
 			c.Abort()
 			return
 		}
