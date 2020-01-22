@@ -28,7 +28,7 @@ func main() {
 
 	// 优雅停机：自己实现
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", setting.ServerCfg.HTTPPort),
+		Addr:         fmt.Sprintf(":%d", setting.ServerCfg.HttpPort),
 		Handler:      r,
 		ReadTimeout:  setting.ServerCfg.ReadTimeout,
 		WriteTimeout: setting.ServerCfg.WriteTimeout,

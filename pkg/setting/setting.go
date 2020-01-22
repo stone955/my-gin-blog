@@ -32,7 +32,7 @@ var ServerCfg = &ServerSetting{}
 
 type ServerSetting struct {
 	RunMode      string
-	HTTPPort     int
+	HttpPort     int
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
