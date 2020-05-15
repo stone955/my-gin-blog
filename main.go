@@ -3,11 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/stone955/my-gin-blog/models"
-	"github.com/stone955/my-gin-blog/pkg/gredis"
-	"github.com/stone955/my-gin-blog/pkg/logging"
-	"github.com/stone955/my-gin-blog/pkg/setting"
-	"github.com/stone955/my-gin-blog/router"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +10,12 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/stone955/my-gin-blog/models"
+	"github.com/stone955/my-gin-blog/pkg/gredis"
+	"github.com/stone955/my-gin-blog/pkg/logging"
+	"github.com/stone955/my-gin-blog/pkg/setting"
+	"github.com/stone955/my-gin-blog/router"
 )
 
 func main() {
